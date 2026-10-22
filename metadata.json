@@ -1,0 +1,6 @@
+{
+  "name": "BebasUtang",
+  "description": "Aplikasi catatan utang pintar dengan pengingat jatuh tempo otomatis, sinkronisasi cloud real-time, enkripsi end-to-end, dan statistik pengeluaran bulanan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

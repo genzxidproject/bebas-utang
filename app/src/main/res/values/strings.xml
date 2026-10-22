@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">BebasUtang</string>
+    <string name="greeting_prefix">Halo %1$s,</string>
+    <string name="greeting_subtitle">Langkah menuju bebas hutang</string>
+    <string name="progress_title">Progres Bebas Utang</string>
+    <string name="lanjut_bayar">Lanjut Bayar</string>
+    <string name="menu_utama">Menu Utama</string>
+    <string name="menu_rincian_utang">Rincian Utang</string>
+    <string name="menu_jadwal_cicilan">Jadwal Cicilan</string>
+    <string name="menu_laporan">Laporan</string>
+    <string name="menu_panduan">Panduan</string>
+    <string name="menu_prioritas_bayar">Prioritas\nBayar</string>
+    <string name="menu_metode_snowball">Metode\nSnowball</string>
+    <string name="menu_segarkan">Segarkan</string>
+    <string name="menu_pengaturan">Pengaturan</string>
+    <string name="kategori_utang">Kategori Utang</string>
+    <string name="lihat_semua">Lihat Semua</string>
+    <string name="kategori_pinjol">Pinjol</string>
+    <string name="kategori_kartu_kredit">Kartu Kredit</string>
+    <string name="utang_aktif_format">*%1$d Utang aktif</string>
+    <string name="sisa_format">Sisa %1$s</string>
+    <string name="tambah_utang">Tambah Utang Baru</string>
+    <string name="catat_pengeluaran">Catat Pengeluaran Bulanan</string>
+    <string name="bayar_cicilan">Bayar Cicilan</string>
+    <string name="sinkronisasi_cloud">Sinkronisasi Cloud &amp; Enkripsi E2E</string>
+    <string name="pengingat_jatuh_tempo">Pengingat Jatuh Tempo Otomatis</string>
+    <string name="statistik_bulanan">Dashboard Statistik Pengeluaran Bulanan</string>
+</resources>

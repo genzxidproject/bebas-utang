@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Bold stylized 'T' & checkmark shield silhouette representing BebasUtang -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M30,32 C30,28.686 32.686,26 36,26 L72,26 C75.314,26 78,28.686 78,32 L78,38 C78,41.314 75.314,44 72,44 L61,44 L47,32 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,32 C30,28.686 32.686,26 36,26 L58,26 L46,44 L36,44 C32.686,44 30,41.314 30,38 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46,40 L62,40 L62,74 C62,78.418 58.418,82 54,82 C49.582,82 46,78.418 46,74 Z" />
+    <path
+        android:fillColor="#22C55E"
+        android:pathData="M64,58 L70,64 L82,50 L86,54 L70,72 L60,62 Z" />
+</vector>
