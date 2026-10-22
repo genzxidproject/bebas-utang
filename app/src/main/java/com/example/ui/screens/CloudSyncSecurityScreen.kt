@@ -615,7 +615,7 @@ fun CloudSyncSecurityScreen(
                                     modifier = Modifier.testTag("clear_data_button")
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.DeleteOutline,
+                                        imageVector = Icons.Default.Delete,
                                         contentDescription = "Kosongkan",
                                         modifier = Modifier.size(17.dp)
                                     )

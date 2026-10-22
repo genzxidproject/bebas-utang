@@ -451,27 +451,27 @@ class DebtRepository(
         cipherPacket: String
     ): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            val endpoint = if (serverUrl.endsWith(\"/\")) \"${serverUrl}sync\" else \"${serverUrl}/sync\"
+            val endpoint = if (serverUrl.endsWith("/")) "${serverUrl}sync" else "${serverUrl}/sync"
             val url = URL(endpoint)
             val conn = (url.openConnection() as HttpURLConnection).apply {
-                requestMethod = \"POST\"
+                requestMethod = "POST"
                 connectTimeout = 10000
                 readTimeout = 15000
                 doOutput = true
-                setRequestProperty(\"Content-Type\", \"application/json; charset=UTF-8\")
-                setRequestProperty(\"X-Sync-Channel\", syncChannel)
+                setRequestProperty("Content-Type", "application/json; charset=UTF-8")
+                setRequestProperty("X-Sync-Channel", syncChannel)
             }
             val body = JSONObject().apply {
-                put(\"channel\", syncChannel)
-                put(\"payload\", cipherPacket)
-                put(\"timestamp\", System.currentTimeMillis())
+                put("channel", syncChannel)
+                put("payload", cipherPacket)
+                put("timestamp", System.currentTimeMillis())
             }
-            OutputStreamWriter(conn.outputStream, \"UTF-8\").use { it.write(body.toString()) }
+            OutputStreamWriter(conn.outputStream, "UTF-8").use { it.write(body.toString()) }
             val code = conn.responseCode
             if (code in 200..299) {
                 Result.success(true)
             } else {
-                Result.failure(Exception(\"Server HTTP error: $code\"))
+                Result.failure(Exception("Server HTTP error: $code"))
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -483,26 +483,26 @@ class DebtRepository(
         syncChannel: String
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
-            val endpoint = if (serverUrl.endsWith(\"/\")) \"${serverUrl}sync?channel=${syncChannel}\" else \"${serverUrl}/sync?channel=${syncChannel}\"
+            val endpoint = if (serverUrl.endsWith("/")) "${serverUrl}sync?channel=${syncChannel}" else "${serverUrl}/sync?channel=${syncChannel}"
             val url = URL(endpoint)
             val conn = (url.openConnection() as HttpURLConnection).apply {
-                requestMethod = \"GET\"
+                requestMethod = "GET"
                 connectTimeout = 10000
                 readTimeout = 15000
-                setRequestProperty(\"Accept\", \"application/json\")
+                setRequestProperty("Accept", "application/json")
             }
             val code = conn.responseCode
             if (code in 200..299) {
-                val response = BufferedReader(InputStreamReader(conn.inputStream, \"UTF-8\")).use { it.readText() }
+                val response = BufferedReader(InputStreamReader(conn.inputStream, "UTF-8")).use { it.readText() }
                 val json = JSONObject(response)
-                val payload = json.optString(\"payload\", \"\")
+                val payload = json.optString("payload", "")
                 if (payload.isNotBlank()) {
                     Result.success(payload)
                 } else {
-                    Result.failure(Exception(\"Payload kosong dari server\"))
+                    Result.failure(Exception("Payload kosong dari server"))
                 }
             } else {
-                Result.failure(Exception(\"Server HTTP error: $code\"))
+                Result.failure(Exception("Server HTTP error: $code"))
             }
         } catch (e: Exception) {
             Result.failure(e)
