@@ -240,7 +240,11 @@ class BebasUtangViewModel(application: Application) : AndroidViewModel(applicati
 
     init {
         viewModelScope.launch {
-            repository.ensureSeeded(_e2ePassphrase.value)
+            val hasInitialized = prefs.getBoolean("has_initialized_portfolio", false)
+            if (!hasInitialized) {
+                repository.ensureSeeded(_e2ePassphrase.value)
+                prefs.edit().putBoolean("has_initialized_portfolio", true).apply()
+            }
             refreshEncryptedCloudSnapshot(showBanner = false)
         }
     }
@@ -567,6 +571,8 @@ class BebasUtangViewModel(application: Application) : AndroidViewModel(applicati
 
     fun resetToRickyDemoData() {
         viewModelScope.launch {
+            prefs.edit().putBoolean("has_initialized_portfolio", true).apply()
+            CryptoManager.clearCaches()
             repository.resetToDemoData(_e2ePassphrase.value)
             refreshEncryptedCloudSnapshot(
                 showBanner = true,
@@ -577,6 +583,8 @@ class BebasUtangViewModel(application: Application) : AndroidViewModel(applicati
 
     fun clearAllUserData() {
         viewModelScope.launch {
+            prefs.edit().putBoolean("has_initialized_portfolio", true).apply()
+            CryptoManager.clearCaches()
             repository.clearAllData()
             refreshEncryptedCloudSnapshot(
                 showBanner = true,
