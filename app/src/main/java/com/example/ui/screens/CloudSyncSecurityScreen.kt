@@ -27,6 +27,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.CloudSync
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Key
@@ -615,7 +616,7 @@ fun CloudSyncSecurityScreen(
                                     modifier = Modifier.testTag("clear_data_button")
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.Delete,
+                                        imageVector = Icons.Default.DeleteOutline,
                                         contentDescription = "Kosongkan",
                                         modifier = Modifier.size(17.dp)
                                     )
