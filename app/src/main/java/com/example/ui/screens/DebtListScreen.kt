@@ -313,10 +313,13 @@ fun DebtListScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(filteredDebts, key = { it.id }) { debt ->
+                    val note = remember(debt.encryptedNotes, inspectEncryptedCipher) {
+                        if (inspectEncryptedCipher) debt.encryptedNotes else decryptNote(debt.encryptedNotes)
+                    }
                     DebtItemCard(
                         debt = debt,
                         showCiphertext = inspectEncryptedCipher,
-                        decryptedNote = decryptNote(debt.encryptedNotes),
+                        decryptedNote = note,
                         onPayClick = { onPayClick(debt) },
                         onDeleteClick = { onDeleteClick(debt) }
                     )

@@ -49,10 +49,10 @@ android {
       isCrunchPngs = false
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfigs.findByName("release")?.let { signingConfig = it }
+      signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
     }
     debug {
-      signingConfigs.findByName("debugConfig")?.let { signingConfig = it }
+      signingConfig = signingConfigs.getByName("debug")
     }
   }
   compileOptions {

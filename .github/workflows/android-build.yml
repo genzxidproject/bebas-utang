@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build Debug APK
+    name: Build Optimized APK
     runs-on: ubuntu-latest
 
     steps:
@@ -26,12 +26,19 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+      - name: Build Release and Debug APKs
+        run: ./gradlew assembleRelease assembleDebug --no-daemon
 
-      - name: Upload APK Artifact
+      - name: Upload Release APK (Smooth & Optimized)
+        uses: actions/upload-artifact@v4
+        with:
+          name: bebasutang-release-apk
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: bebasutang-debug-apk
           path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
+          if-no-files-found: warn

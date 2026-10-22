@@ -27,17 +27,28 @@ object CryptoManager {
     private const val PREFIX_E2E = "E2E1:"
 
     private val secureRandom = SecureRandom()
+    private val keyCache = java.util.concurrent.ConcurrentHashMap<String, SecretKeySpec>()
+    private val decryptedCache = java.util.concurrent.ConcurrentHashMap<String, String>()
+
+    fun clearCaches() {
+        keyCache.clear()
+        decryptedCache.clear()
+    }
 
     fun deriveAesKey(passphrase: String, salt: ByteArray): SecretKeySpec {
-        val spec = PBEKeySpec(
-            passphrase.toCharArray(),
-            salt,
-            PBKDF2_ITERATIONS,
-            KEY_LENGTH_BITS
-        )
-        val factory = SecretKeyFactory.getInstance(KEY_DERIVATION_ALGORITHM)
-        val keyBytes = factory.generateSecret(spec).encoded
-        return SecretKeySpec(keyBytes, "AES")
+        val saltHex = salt.joinToString("") { "%02x".format(it) }
+        val cacheKey = "$passphrase:$saltHex"
+        return keyCache.computeIfAbsent(cacheKey) {
+            val spec = PBEKeySpec(
+                passphrase.toCharArray(),
+                salt,
+                PBKDF2_ITERATIONS,
+                KEY_LENGTH_BITS
+            )
+            val factory = SecretKeyFactory.getInstance(KEY_DERIVATION_ALGORITHM)
+            val keyBytes = factory.generateSecret(spec).encoded
+            SecretKeySpec(keyBytes, "AES")
+        }
     }
 
     /**
@@ -59,7 +70,9 @@ object CryptoManager {
             System.arraycopy(iv, 0, combined, salt.size, iv.size)
             System.arraycopy(cipherBytes, 0, combined, salt.size + iv.size, cipherBytes.size)
 
-            PREFIX_E2E + Base64.encodeToString(combined, Base64.NO_WRAP)
+            val result = PREFIX_E2E + Base64.encodeToString(combined, Base64.NO_WRAP)
+            decryptedCache["$result:$passphrase"] = plainText
+            result
         } catch (e: Exception) {
             plainText
         }
@@ -71,6 +84,9 @@ object CryptoManager {
     fun decryptText(cipherPayload: String, passphrase: String): String {
         if (cipherPayload.isBlank()) return ""
         if (!cipherPayload.startsWith(PREFIX_E2E)) return cipherPayload
+        val cacheKey = "$cipherPayload:$passphrase"
+        decryptedCache[cacheKey]?.let { return it }
+
         return try {
             val encoded = cipherPayload.removePrefix(PREFIX_E2E)
             val combined = Base64.decode(encoded, Base64.NO_WRAP)
@@ -84,7 +100,9 @@ object CryptoManager {
             val cipher = Cipher.getInstance(TRANSFORMATION)
             cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(GCM_TAG_BITS, iv))
             val decryptedBytes = cipher.doFinal(cipherBytes)
-            String(decryptedBytes, StandardCharsets.UTF_8)
+            val decrypted = String(decryptedBytes, StandardCharsets.UTF_8)
+            decryptedCache[cacheKey] = decrypted
+            decrypted
         } catch (e: Exception) {
             "🔒 Data Terenkripsi (Kunci E2E Berbeda)"
         }
